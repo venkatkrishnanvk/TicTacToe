@@ -1,0 +1,456 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+
+int dm[6][6];
+int cm[3][3];
+int check_array[8];//r1,r2,r3,c1,c2,c3,d1,d2;
+int selected_line;
+void print_matrix()
+{
+    printf("\n");
+    for (int i=0;i<6;i++)
+    {
+        for(int j=0;j<6;j++)
+        {
+            printf("%c",dm[i][j]);
+        }
+        printf("\n");
+    }   
+}
+
+void toDM(int i, int j)
+{
+    if(i==0 && j==0)
+    dm[1][1]=79;
+    if(i==0 && j==1)
+    dm[1][3]=79;
+    if(i==0 && j==2)
+    dm[1][5]=79;
+    if(i==1 && j==0)
+    dm[2][1]=79;
+    if(i==1 && j==1)
+    dm[2][3]=79;
+    if(i==1 && j==2)
+    dm[2][5]=79;
+    if(i==2 && j==0)
+    dm[3][1]=79;
+    if(i==2 && j==1)
+    dm[3][3]=79;
+    if(i==2 && j==2)
+    dm[3][5]=79;
+}
+void check_function1()
+{
+    if (cm[1][1]!=1)
+    {
+        cm[1][1]=-1;
+        dm[2][3]=79;
+    }
+    else 
+    {
+        cm[0][0]=-1;
+        dm[1][1]=79;
+    }
+    print_matrix();
+}
+
+void check_function2()
+{
+    
+    
+}
+
+void check_row(int i)
+{
+    int sum=0;
+    for(int j=0;j<3;j++)
+    {
+        sum=sum+cm[i][j];
+    }
+        check_array[i]=sum;
+    if(sum==3)
+    {
+        printf("\n YOU WON !!!");
+    }
+    if(sum==-3)
+    {
+        printf("\n I WON !!!");
+    }
+}
+void check_column(int j)
+{
+    int sum=0;
+    for(int i=0;i<3;i++)
+    {
+        sum=sum+cm[i][j];
+    }
+        check_array[j+3]=sum;
+    if(sum==3)
+    {
+        printf("\n YOU WON !!!");
+    }
+    if(sum==-3)
+    {
+        printf("\n I WON !!!");
+    }
+}
+void check_diagonal()
+{
+    int sum=0;
+    for(int i=0;i<3;i++)
+    {
+        sum=sum+cm[i][i];
+    }
+    check_array[6]=sum;
+    
+    sum=cm[0][2]+cm[1][1]+cm[2][0];
+    check_array[7]=sum;
+    if(sum==3)
+    {
+        printf("\n YOU WON !!!");
+    }
+    if(sum==-3)
+    {
+        printf("\n I WON !!!");
+    }
+}
+
+
+void update_row(int i)
+{
+        if(cm[i][0]!=1 && cm[i][0]!=-1)
+            {
+                cm[i][0]=-1;
+                toDM(i,0);
+            }
+        else if(cm[i][2]!=1 && cm[i][2]!=-1)
+            {
+                cm[i][2]=-1;
+                toDM(i,2);
+            }
+        else if(cm[i][1]!=1 && cm[i][1]!=-1)
+            {
+                cm[i][1]=-1;
+                toDM(i,1);
+            }
+    
+}
+void update_column(int j)
+{
+        if(cm[0][j]!=1 && cm[0][j]!=-1)
+            {
+                cm[0][j]=-1;
+                toDM(0,j);
+            }
+        else if(cm[2][j]!=1 && cm[2][j]!=-1)
+            {
+                cm[2][j]=-1;
+                toDM(2,j);
+            }
+        else if(cm[1][j]!=1 && cm[1][j]!=-1)
+            {
+                cm[1][j]=-1;
+                toDM(1,j);
+            }
+}
+void update_diagonal1()
+{
+    for(int i=0;i<3;i++)
+    {
+        if(cm[i][i]!=1 && cm[i][i]!=-1)
+        cm[i][i]=-1;
+        toDM(i,i);
+        break;
+    }
+    
+}
+void update_diagonal2()
+{
+    if(cm[1][1]!=1 && cm[1][1]!=-1)
+    {
+        cm[1][1]=-1;
+        toDM(1,1);
+        return;
+    }
+    if(cm[0][2]!=1 && cm[0][2]!=-1)
+    {
+        cm[0][2]=-1;
+        toDM(0,2);
+        return;
+    }
+    if(cm[2][0]!=1 && cm[2][0]!=-1)
+    {
+        cm[2][0]=-1;
+        toDM(2,0);
+    }
+
+}
+
+void get_input()
+  /*
+    A=1,1; 1,3; 1,5
+    B=2,1; 2,3; 2,5
+    C=3,1; 3,3; 3,5
+    */
+    
+{
+    //char *input;
+    char input[10];
+    printf("Please select a box like A1, B2, C3   \n");
+    repeat_input:
+    scanf("%s", input);
+    if(input[0]=='A' && input[1]=='1')
+    {
+        if(cm[0][0]!=1 && cm[0][0]!=-1)
+        {
+        dm[1][1]=88;
+        cm[0][0]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else if(input[0]=='B' && input[1]=='1')
+    {
+        if(cm[0][1]!=1 && cm[0][1]!=-1)
+        {
+        dm[1][3]=88;
+        cm[0][1]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else if(input[0]=='C' && input[1]=='1')
+    {
+        if(cm[0][2]!=1 && cm[0][2]!=-1)
+        {
+        dm[1][5]=88;
+        cm[0][2]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else if(input[0]=='A' && input[1]=='2')
+    {
+        if(cm[1][0]!=1 && cm[1][0]!=-1)
+        {
+        dm[2][1]=88;
+        cm[1][0]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else if(input[0]=='B' && input[1]=='2')
+    {
+        if(cm[1][1]!=1 && cm[1][1]!=-1)
+        {
+        dm[2][3]=88;
+        cm[1][1]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else if(input[0]=='C' && input[1]=='2')
+    {
+        if(cm[1][2]!=1 && cm[1][2]!=-1)
+        {
+        dm[2][5]=88;
+        cm[1][2]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else if(input[0]=='A' && input[1]=='3')
+    {
+        if(cm[2][0]!=1 && cm[2][0]!=-1)
+        {
+        dm[3][1]=88;
+        cm[2][0]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else if(input[0]=='B' && input[1]=='3')
+    {
+        if(cm[2][1]!=1 && cm[2][1]!=-1)
+        {
+        dm[3][3]=88;
+        cm[2][1]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else if(input[0]=='C' && input[1]=='3')
+    {
+        if(cm[2][2]!=1 && cm[2][2]!=-1)
+        {
+        dm[3][5]=88;
+        cm[2][2]=1;
+        }
+        else
+        {
+            printf("That box is filled. Please select a valid box");
+            goto repeat_input;
+        }
+    }
+    else
+    {
+        printf("Please select a valid box eg. A1, B2, C3");
+        goto repeat_input;
+    }
+    
+    print_matrix();
+}
+
+int main()
+{
+    int max;
+    int finish=0;
+
+    for (int i=0;i<6;i++)
+    {
+        for(int j=0;j<6;j++)
+        {
+            dm[i][j]=0;
+        }
+       //printf("\n");
+    }
+    dm[0][0]=dm[0][2]=dm[0][4]=dm[1][1]=dm[1][3]=dm[1][5]=dm[2][1]=dm[2][3]=dm[2][5]=dm[3][1]=dm[3][3]=dm[3][5]=32;
+    dm[1][2]=dm[1][4]=dm[2][2]=dm[2][4]=dm[3][2]=dm[3][4]=124;
+    dm[0][1]=65;
+    dm[0][3]=66;
+    dm[0][5]=67;
+    dm[1][0]=49;
+    dm[2][0]=50;
+    dm[3][0]=51;
+    
+    print_matrix();
+    
+    get_input();
+    check_function1();
+    
+    for(int count=0;count<4;count++)
+    {
+    get_input();
+    
+    check_row(0);
+    check_row(1);
+    check_row(2);
+    check_column(0);
+    check_column(1);
+    check_column(2);
+    check_diagonal();
+    
+    max =0;
+    
+    for(int i=7;i>-1;i--)
+    {
+        if(check_array[i]==-2)   // CPU about to win
+        {
+            selected_line=i;
+            printf("I WON !!!");
+            finish=1;
+            break;
+        }
+        
+        if(check_array[i]==3)   // User won
+        {
+            selected_line=i;
+            printf("You WON !!!");
+            finish=1;
+            break;
+        }
+    
+        if(check_array[i]>max)
+        {
+            max=check_array[i];
+            selected_line=i;
+        }
+    }
+    
+    /* Printing to check the selection:
+    printf("Check array \n");
+    for(int i=0;i<8;i++)
+    {
+        printf("%d\t", check_array[i]);
+    }
+    
+    printf("Selected_line %d", selected_line);
+    */
+    switch(selected_line)
+    {
+        case 0: update_row(0);
+                //printf("Case 0");
+                break;
+        case 1: update_row(1);
+                //printf("Case 1");
+                break;
+        case 2: update_row(2);
+                //printf("Case 2");
+                break;
+        
+        case 3: update_column(0);
+                //printf("Case 3");
+                break;
+        
+        case 4: update_column(1);
+                //printf("Case 4");
+                break;
+        
+        case 5: update_column(2);
+                //printf("Case 5");
+                break;
+        case 6: update_diagonal1();
+                //printf("Case 6");
+                break;
+        case 7: update_diagonal2();
+                //printf("Case 7");
+    }
+    
+    print_matrix();
+    
+    if(count>2)
+    {
+        printf("It's a Draw");
+        return 0;
+    }
+    if(finish==1)
+    {
+        return 0;
+    }
+    }
+    
+  
+    return 0;
+}
+    
